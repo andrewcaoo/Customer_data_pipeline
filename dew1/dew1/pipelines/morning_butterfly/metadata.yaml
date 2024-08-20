@@ -1,0 +1,157 @@
+blocks:
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - export_data_to_datalake
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Get_data_from_API
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: get_data_from_api
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - get_data_from_datalake
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Export_data_to_datalake
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - get_data_from_api
+  uuid: export_data_to_datalake
+- all_upstream_blocks_executed: true
+  color: blue
+  configuration: {}
+  downstream_blocks:
+  - cleaning_and_seperating_data
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Get_data_from_datalake
+  retry_config: null
+  status: executed
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - export_data_to_datalake
+  uuid: get_data_from_datalake
+- all_upstream_blocks_executed: true
+  color: purple
+  configuration: {}
+  downstream_blocks:
+  - brave_meadow
+  - export_data_to_lakehouse
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Cleaning_and_seperating_data
+  retry_config: null
+  status: executed
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - get_data_from_datalake
+  uuid: cleaning_and_seperating_data
+- all_upstream_blocks_executed: true
+  color: yellow
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Export_data_to_lakehouse
+  retry_config: null
+  status: failed
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - cleaning_and_seperating_data
+  uuid: export_data_to_lakehouse
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: brave meadow
+  retry_config: null
+  status: failed
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - cleaning_and_seperating_data
+  uuid: brave_meadow
+- all_upstream_blocks_executed: true
+  color: grey
+  configuration: {}
+  downstream_blocks:
+  - solitary_core
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: masterful glacier
+  retry_config: null
+  status: updated
+  timeout: null
+  type: custom
+  upstream_blocks: []
+  uuid: masterful_glacier
+- all_upstream_blocks_executed: false
+  color: yellow
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: solitary core
+  retry_config: null
+  status: updated
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - masterful_glacier
+  uuid: solitary_core
+cache_block_output_in_memory: false
+callbacks: []
+concurrency_config: {}
+conditionals: []
+created_at: '2024-08-18 16:34:13.997177+00:00'
+data_integration: null
+description: DEW1-pipeline
+executor_config: {}
+executor_count: 1
+executor_type: null
+extensions: {}
+name: morning butterfly
+notification_config: {}
+remote_variables_dir: null
+retry_config: {}
+run_pipeline_in_one_process: false
+settings:
+  triggers: null
+spark_config: {}
+tags: []
+type: python
+uuid: morning_butterfly
+variables_dir: /home/src/mage_data/dew1
+widgets: []
