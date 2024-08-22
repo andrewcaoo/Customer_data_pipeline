@@ -54,14 +54,23 @@ def transform_custom(df: DataFrame, **kwargs):
 
     # fact table
 
+    fact_df = pd.DataFrame()
+    fact_df['base_use_info'] = dim_user_info['row_id']
+    fact_df['employment_info'] = dim_employment['row_id']
+    fact_df['address_info'] = dim_address['row_id']
+    fact_df['subscription_info'] = dim_subscription['row_id']
+    fact_df = add_uuid(fact_df)
+
+
     wh_table = {
         'dim_user_info': dim_user_info,
         'dim_employment': dim_employment,
         'dim_address': dim_address,
-        'dim_subscription': dim_subscription
+        'dim_subscription': dim_subscription,
+        'fact_table': fact_df
     }
 
-    print(wh_table['dim_user_info'])
+    print(fact_df)
 
     return wh_table
 

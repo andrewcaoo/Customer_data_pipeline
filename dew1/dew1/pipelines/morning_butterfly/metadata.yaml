@@ -53,8 +53,12 @@ blocks:
   color: purple
   configuration: {}
   downstream_blocks:
-  - brave_meadow
+  - load_dim_user_info
   - export_data_to_lakehouse
+  - load_dim_employment
+  - load_dim_address
+  - load_dim_subscription
+  - load_fact_table
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -85,52 +89,111 @@ blocks:
   uuid: export_data_to_lakehouse
 - all_upstream_blocks_executed: true
   color: null
-  configuration: {}
+  configuration:
+    file_path: custom/load_dim_user_info.py
+    file_source:
+      path: custom/load_dim_user_info.py
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: brave meadow
+  name: Load_dim_user_info
   retry_config: null
-  status: failed
+  status: updated
   timeout: null
   type: custom
   upstream_blocks:
   - cleaning_and_seperating_data
-  uuid: brave_meadow
+  uuid: load_dim_user_info
 - all_upstream_blocks_executed: true
   color: grey
-  configuration: {}
-  downstream_blocks:
-  - solitary_core
+  configuration:
+    file_path: custom/load_dim_employment.py
+    file_source:
+      path: custom/load_dim_employment.py
+  downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: masterful glacier
+  name: Load_dim_employment
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: custom
-  upstream_blocks: []
-  uuid: masterful_glacier
-- all_upstream_blocks_executed: false
-  color: yellow
+  upstream_blocks:
+  - cleaning_and_seperating_data
+  uuid: load_dim_employment
+- all_upstream_blocks_executed: true
+  color: grey
+  configuration:
+    file_path: custom/load_dim_address.py
+    file_source:
+      path: custom/load_dim_address.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Load_dim_address
+  retry_config: null
+  status: executed
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - cleaning_and_seperating_data
+  uuid: load_dim_address
+- all_upstream_blocks_executed: true
+  color: purple
   configuration: {}
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: solitary core
+  name: Query
   retry_config: null
-  status: updated
+  status: executed
+  timeout: null
+  type: custom
+  upstream_blocks: []
+  uuid: query
+- all_upstream_blocks_executed: true
+  color: grey
+  configuration:
+    file_path: custom/load_dim_subscription.py
+    file_source:
+      path: custom/load_dim_subscription.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Load_dim_subscription
+  retry_config: null
+  status: executed
   timeout: null
   type: custom
   upstream_blocks:
-  - masterful_glacier
-  uuid: solitary_core
+  - cleaning_and_seperating_data
+  uuid: load_dim_subscription
+- all_upstream_blocks_executed: true
+  color: grey
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: Load_fact_table
+  retry_config: null
+  status: executed
+  timeout: null
+  type: custom
+  upstream_blocks:
+  - cleaning_and_seperating_data
+  uuid: load_fact_table
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}

@@ -27,7 +27,7 @@ services:
 
   trino:
     hostname: trino
-    image: 'trinodb/trino:351'
+    image: 'trinodb/trino:latest'
     ports:
       - '8080:8080'
     volumes:

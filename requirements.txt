@@ -1,5 +1,5 @@
 awswrangler
 pyarrow
 minio
-pyiceberg
+pyiceberg[s3fs,hive]
 pyspark
