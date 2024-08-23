@@ -61,9 +61,9 @@ def transform_custom(wh_table: dict, *args, **kwargs):
     print(arrow_df)
     table = None
     # Table Creation or Loading
-    if not hive_catalog.table_exists("lakehouse_w1.dim_employment"):
+    if not hive_catalog.table_exists("lakehouse_w.dim_employment"):
         table = hive_catalog.create_table(
-            "lakehouse_w1.dim_employment",
+            "lakehouse_w.dim_employment",
             schema=schema,
             partition_spec=partition_spec,
             sort_order=sort_order,
@@ -72,7 +72,7 @@ def transform_custom(wh_table: dict, *args, **kwargs):
             }
         )
     else:
-        table = hive_catalog.load_table("lakehouse_w1.dim_employment")
+        table = hive_catalog.load_table("lakehouse_w.dim_employment")
 
     for _, record in arrow_df.to_pandas().iterrows():
         row_id = record['row_id']

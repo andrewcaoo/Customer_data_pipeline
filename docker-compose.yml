@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   mage:
     image: mageai/mageai:latest
@@ -27,11 +27,14 @@ services:
 
   trino:
     hostname: trino
-    image: 'trinodb/trino:latest'
+    image: 'trinodb/trino:410'
     ports:
       - '8080:8080'
     volumes:
       - ./etc:/usr/lib/trino/etc:ro
+      - ./etc/catalog:/etc/trino/catalog
+    depends_on:
+      - hive-metastore
 
   mariadb:
     hostname: mariadb

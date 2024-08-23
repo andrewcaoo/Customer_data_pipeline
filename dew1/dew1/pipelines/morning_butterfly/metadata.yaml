@@ -100,7 +100,7 @@ blocks:
   language: python
   name: Load_dim_user_info
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: custom
   upstream_blocks:
@@ -188,7 +188,7 @@ blocks:
   language: python
   name: Load_fact_table
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: custom
   upstream_blocks:
