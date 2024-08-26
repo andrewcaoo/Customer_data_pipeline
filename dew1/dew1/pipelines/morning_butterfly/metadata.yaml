@@ -54,7 +54,6 @@ blocks:
   configuration: {}
   downstream_blocks:
   - load_dim_user_info
-  - export_data_to_lakehouse
   - load_dim_employment
   - load_dim_address
   - load_dim_subscription
@@ -72,35 +71,20 @@ blocks:
   - get_data_from_datalake
   uuid: cleaning_and_seperating_data
 - all_upstream_blocks_executed: true
-  color: yellow
-  configuration: {}
-  downstream_blocks: []
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: Export_data_to_lakehouse
-  retry_config: null
-  status: failed
-  timeout: null
-  type: custom
-  upstream_blocks:
-  - cleaning_and_seperating_data
-  uuid: export_data_to_lakehouse
-- all_upstream_blocks_executed: true
   color: null
   configuration:
     file_path: custom/load_dim_user_info.py
     file_source:
       path: custom/load_dim_user_info.py
-  downstream_blocks: []
+  downstream_blocks:
+  - query
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
   name: Load_dim_user_info
   retry_config: null
-  status: executed
+  status: failed
   timeout: null
   type: custom
   upstream_blocks:
@@ -112,14 +96,15 @@ blocks:
     file_path: custom/load_dim_employment.py
     file_source:
       path: custom/load_dim_employment.py
-  downstream_blocks: []
+  downstream_blocks:
+  - query
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
   name: Load_dim_employment
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: custom
   upstream_blocks:
@@ -131,7 +116,8 @@ blocks:
     file_path: custom/load_dim_address.py
     file_source:
       path: custom/load_dim_address.py
-  downstream_blocks: []
+  downstream_blocks:
+  - query
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -144,7 +130,7 @@ blocks:
   upstream_blocks:
   - cleaning_and_seperating_data
   uuid: load_dim_address
-- all_upstream_blocks_executed: true
+- all_upstream_blocks_executed: false
   color: purple
   configuration: {}
   downstream_blocks: []
@@ -154,10 +140,15 @@ blocks:
   language: python
   name: Query
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: custom
-  upstream_blocks: []
+  upstream_blocks:
+  - load_dim_address
+  - load_dim_employment
+  - load_dim_subscription
+  - load_dim_user_info
+  - load_fact_table
   uuid: query
 - all_upstream_blocks_executed: true
   color: grey
@@ -165,7 +156,8 @@ blocks:
     file_path: custom/load_dim_subscription.py
     file_source:
       path: custom/load_dim_subscription.py
-  downstream_blocks: []
+  downstream_blocks:
+  - query
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -181,7 +173,8 @@ blocks:
 - all_upstream_blocks_executed: true
   color: grey
   configuration: {}
-  downstream_blocks: []
+  downstream_blocks:
+  - query
   executor_config: null
   executor_type: local_python
   has_callback: false

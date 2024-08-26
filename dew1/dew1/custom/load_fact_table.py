@@ -47,9 +47,8 @@ def transform_custom(wh_table: dict, *args, **kwargs):
             "s3.secret-access-key": "minio123"
         }
     )
-
-    arrow_df = pa.Table.from_pandas(wh_table['fact_table'])
-    print(arrow_df)
+    # print(wh_table['fact_table'])
+    pandas_df = wh_table['fact_table']
     table = None
 
     if not hive_catalog.table_exists("lakehouse_w.fact_user_details"):
@@ -64,10 +63,10 @@ def transform_custom(wh_table: dict, *args, **kwargs):
         )
     else:
         table = hive_catalog.load_table("lakehouse_w.fact_user_details")
-
-    for _, record in arrow_df.to_pandas().iterrows():
+    for _, record in pandas_df.iterrows():
         base_use_info = record['base_use_info']
-        print(base_use_info)
+
+        record_df = pa.Table.from_pandas(pd.DataFrame([record]).reset_index(drop=True))
 
         existing_df = table.scan(
             row_filter=EqualTo('base_use_info', base_use_info),
@@ -75,12 +74,14 @@ def transform_custom(wh_table: dict, *args, **kwargs):
 
         if not len(existing_df) == 0:
             x = table.delete(delete_filter= EqualTo('base_use_info', base_use_info))
-        arrow_df = arrow_df.set_column(
+          
+        record_df = record_df.set_column(
                 5,
                 'datetime_day',
-                arrow_df['datetime_day'].cast(pa.timestamp('us'))
+                record_df['datetime_day'].cast(pa.timestamp('us'))
             )
-        table.append(arrow_df)
+
+        table.append(record_df)
 
     return {}
 

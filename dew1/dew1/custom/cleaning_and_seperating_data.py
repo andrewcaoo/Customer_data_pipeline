@@ -1,6 +1,7 @@
 
 import pandas as pd
 from pandas import DataFrame
+from pyiceberg.catalog import load_catalog
 import time
 from datetime import datetime, timedelta
 import pytz
@@ -32,6 +33,7 @@ def transform_custom(df: DataFrame, **kwargs):
     if 'message' in df.columns:
         df = df.drop('message', axis=1)
     df = df.dropna(subset=['id','uid'])
+    print(df.info())
 
     # Separating data
     
@@ -59,7 +61,6 @@ def transform_custom(df: DataFrame, **kwargs):
     fact_df['employment_info'] = dim_employment['row_id']
     fact_df['address_info'] = dim_address['row_id']
     fact_df['subscription_info'] = dim_subscription['row_id']
-    fact_df = add_uuid(fact_df)
 
 
     wh_table = {
@@ -70,7 +71,20 @@ def transform_custom(df: DataFrame, **kwargs):
         'fact_table': fact_df
     }
 
-    print(fact_df)
+    try:
+        hive_catalog = load_catalog(
+            "hive",
+                **{
+                    "uri": "thrift://hive-metastore:9083",
+                    "s3.endpoint": "http://minio:9000",
+                    "s3.access-key-id": "minio",
+                    "s3.secret-access-key": "minio123"
+                }
+            )
+        hive_catalog.create_namespace('lakehouse_w')
+    except Exception as er:
+        print(str(er))
+
 
     return wh_table
 

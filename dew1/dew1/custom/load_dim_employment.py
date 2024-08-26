@@ -73,8 +73,10 @@ def transform_custom(wh_table: dict, *args, **kwargs):
         )
     else:
         table = hive_catalog.load_table("lakehouse_w.dim_employment")
-
+    i = 0
     for _, record in arrow_df.to_pandas().iterrows():
+        if i == 1:
+            break
         row_id = record['row_id']
 
         existing_df = table.scan(
@@ -134,8 +136,9 @@ def transform_custom(wh_table: dict, *args, **kwargs):
             'datetime_day',
             new_record_arrow['datetime_day'].cast(pa.timestamp('us'))
         )
-            
+        print('--->', new_record_arrow)
         table.append(new_record_arrow)
+        i+=1
 
     return {}
 

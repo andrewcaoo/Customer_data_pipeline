@@ -65,7 +65,7 @@ def transform_custom(wh_table: dict, *args, **kwargs):
             "s3.secret-access-key": "minio123"
         }
     )
-    hive_catalog.create_namespace('lakehouse_w')
+    # hive_catalog.create_namespace('lakehouse_w')
     # Convert Pandas DataFrame to PyArrow Table
     arrow_df = pa.Table.from_pandas(wh_table['dim_user_info'])
     table = None
@@ -157,7 +157,7 @@ def transform_custom(wh_table: dict, *args, **kwargs):
             
         table.append(new_record_arrow)
          
-    print(hive_catalog.list_tables('lakehouse_w1'))
+    print(hive_catalog.list_tables('lakehouse_w'))
 
     return {}
 

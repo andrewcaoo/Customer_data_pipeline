@@ -1,4 +1,9 @@
 from pyiceberg.catalog import load_catalog
+import pandas as pd
+import pyarrow as pa
+import pyarrow.compute as pc
+from datetime import datetime
+
 
 if 'custom' not in globals():
     from mage_ai.data_preparation.decorators import custom
@@ -15,7 +20,8 @@ def transform_custom(*args, **kwargs):
         Anything (e.g. data frame, dictionary, array, int, str, etc.)
     """
     # Specify your custom logic here
-    catalog = load_catalog(
+    
+    hive_catalog = load_catalog(
         "hive",
         **{
             "uri": "thrift://hive-metastore:9083",
@@ -24,9 +30,8 @@ def transform_custom(*args, **kwargs):
             "s3.secret-access-key": "minio123"
         }
     )
-    table = catalog.load_table('lakehouse_w.fact_user_details') 
-    print(table.scan().to_pandas())
-
+    table = hive_catalog.load_table("lakehouse_w.dim_address")
+    print(table.inspect.snapshots())
     return {}
 
 
